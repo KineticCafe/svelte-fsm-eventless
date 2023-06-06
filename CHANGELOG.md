@@ -1,6 +1,9 @@
-# svelte-fsm changelog
+# @kineticcafe/svelte-fsm-eventless changelog
 
 ## 1.2.0
+
+This version of @kineticcafe/svelte-fsm-eventless is based on
+kenkunz/svelte-fsm 1.2.0.
 
 - **[fix]** prevent `subscribe` from invoking action ([#9](https://github.com/kenkunz/svelte-fsm/pull/9) - closes [#8](https://github.com/kenkunz/svelte-fsm/issues/8))
 
