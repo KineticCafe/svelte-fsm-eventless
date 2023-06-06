@@ -1,5 +1,6 @@
 import { assert } from 'chai';
 import sinon from 'sinon';
+import { inspect } from 'util';
 import fsm from '../index.js';
 
 sinon.assert.expose(assert, { prefix: '' });
@@ -60,22 +61,19 @@ describe('a finite state machine', () => {
       unsubscribe();
     });
 
-    it('should fail subscribe action handler when invoked with no args', () => {
-      assert.throws(() => {
-        machine.subscribe();
-      }, TypeError);
+    it('should throw TypeError when invoked with no args', () => {
+      assert.throws(machine.subscribe, TypeError);
     });
 
-    it('should call subscribe action handler when invoked with single non-function arg', () => {
+    it('should throw TypeError when invoked with non-function arg', () => {
       assert.throws(() => {
         machine.subscribe('not a function');
       }, TypeError);
     });
 
     it('should not call subscribe action handler when invoked with multiple args', () => {
-      const fn = sinon.fake();
-      machine.subscribe(fn, null);
-      assert.neverCalledWith(states.off.subscribe, fn, null);
+      machine.subscribe(sinon.fake(), null);
+      assert.notCalled(states.off.subscribe);
     });
   });
 
@@ -245,8 +243,9 @@ describe('a finite state machine', () => {
       const kick = machine.kick.debounce(100, 1);
       const cancelation = machine.kick.debounce(null);
       clock.tick(100);
-      const state = await Promise.any([kick, cancelation]);
+      const state = await cancelation;
       assert.notCalled(states.off.kick);
+      assert.include(inspect(kick), '<pending>');
       assert.equal('off', state);
     });
   });
