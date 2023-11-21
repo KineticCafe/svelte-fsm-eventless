@@ -11,7 +11,7 @@ on:
 
 jobs:
   typescript-ci:
-    name: Typescript ${{ matrix.node }}
+    name: Typescript (Node ${{ matrix.node }}, pnpm ${{ matrix.pnpm }}) - ${{ matrix.os }}
 
     strategy:
       fail-fast: true
@@ -19,20 +19,31 @@ jobs:
         os:
           - ubuntu-latest
         node:
-          - 14
-          - 16
           - 18
+          - 20
+        pnpm:
+          - 8
 
     runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: ${{ matrix.pnpm }}
+
+      - uses: actions/setup-node@v4.0.0
         with:
           node-version: ${{ matrix.node }}
-          cache: yarn
-      - run: yarn install --frozen-lockfile
-      - run: yarn test
-      # - run: yarn lint
-      # - run: yarn format:check
-      # - run: yarn build:all
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm lint
+      - run: |
+          pnpm format:check || {
+            pnpm format
+            git diff
+            exit 1
+          }
