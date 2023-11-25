@@ -1,5 +1,13 @@
 # @kineticcafe/svelte-fsm-eventless changelog
 
+## 2.0.0
+
+- Upgrade to Sinon 17, which requires Node.js 18
+- Switch to pnpm from yarn
+- Add eslint and prettier configurations.
+
+There are no API changes.
+
 ## 1.2.0
 
 This version of @kineticcafe/svelte-fsm-eventless is based on

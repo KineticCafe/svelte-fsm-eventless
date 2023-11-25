@@ -1,6 +1,6 @@
 {
   "name": "@kineticcafe/svelte-fsm-eventless",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Tiny (<1kb), expressive, Svelte-optimized Finite State Machine (FSM) library with support for eventless transitions",
   "type": "module",
   "main": "./index.js",
@@ -10,12 +10,15 @@
   },
   "types": "index.d.ts",
   "scripts": {
-    "test": "yarn run test:units && yarn run test:types",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint index.js test/ --ext .js,.cjs,.mjs",
+    "test": "pnpm run test:units && pnpm run test:types",
     "test:units": "mocha",
     "test:types": "tsc --noEmit --target es6 test/*.ts"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0"
   },
   "sideEffects": false,
   "repository": {
@@ -29,16 +32,26 @@
     "state",
     "machine"
   ],
-  "author": "Ken Kunz",
+  "author": "Ken Kunz & Stuart Watt",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kineticcafe/svelte-fsm-eventless/issues"
   },
   "homepage": "https://github.com/kineticcafe/svelte-fsm-eventless#README",
   "devDependencies": {
+    "@types/chai": "^4.3.11",
+    "@types/sinon": "^17.0.2",
     "chai": "^4.3.4",
+    "eslint": "^8.54.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-mocha": "^10.2.0",
+    "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-promise": "^6.0.0",
     "mocha": "^10.2.0",
-    "sinon": "^15.1.0",
+    "prettier": "^3.1.0",
+    "sinon": "^17.0.1",
     "typescript": "^5.1.3"
   }
 }
