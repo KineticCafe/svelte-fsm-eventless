@@ -94,11 +94,11 @@ valid3.overloaded('string', 2)
 valid3.overloaded(1, 2, 3)
 
 // @ts-expect-error overloaded with single argument returns string | symbol
-const overloadedResult1Invalid: void = valid3.overloaded(1)
+const overloadedResult1Invalid: undefined = valid3.overloaded(1)
 const overloadedResult1Valid: string | symbol = valid3.overloaded(1)
 
 // @ts-expect-error overloaded with two arguments returns string | symbol
-const overloadedResult2Invalid: void = valid3.overloaded('string', 1)
+const overloadedResult2Invalid: undefined = valid3.overloaded('string', 1)
 const overloadedResult2Valid: string | symbol = valid3.overloaded('string', 1)
 
 // A state machine that uses symbols as a state keys
