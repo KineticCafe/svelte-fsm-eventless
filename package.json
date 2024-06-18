@@ -10,12 +10,15 @@
   },
   "types": "index.d.ts",
   "scripts": {
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "lint": "eslint index.js test/ --ext .js,.cjs,.mjs",
+    "check": "biome check .",
+    "check:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write .",
     "test": "pnpm run test:units && pnpm run test:types",
-    "test:units": "mocha",
-    "test:types": "tsc --noEmit --target es6 test/*.ts"
+    "test:types": "tsc --noEmit --target es6 test/*.ts",
+    "test:units": "mocha"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -25,13 +28,7 @@
     "type": "git",
     "url": "https://github.com/kineticcafe/svelte-fsm-eventless.git"
   },
-  "keywords": [
-    "svelte",
-    "fsm",
-    "finite",
-    "state",
-    "machine"
-  ],
+  "keywords": ["svelte", "fsm", "finite", "state", "machine"],
   "author": "Ken Kunz & Stuart Watt",
   "license": "MIT",
   "bugs": {
@@ -39,19 +36,14 @@
   },
   "homepage": "https://github.com/kineticcafe/svelte-fsm-eventless#README",
   "devDependencies": {
+    "-": "0.0.1",
+    "@biomejs/biome": "1.8.0",
     "@types/chai": "^4.3.11",
     "@types/sinon": "^17.0.2",
-    "chai": "^5.1.0",
-    "eslint": "^8.54.0",
-    "eslint-config-standard": "^17.1.0",
-    "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-mocha": "^10.2.0",
-    "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
-    "eslint-plugin-prettier": "^5.0.1",
-    "eslint-plugin-promise": "^6.0.0",
-    "mocha": "^10.2.0",
-    "prettier": "^3.1.0",
+    "chai": "^5.1.1",
+    "mocha": "^10.4.0",
     "sinon": "^18.0.0",
-    "typescript": "^5.1.3"
-  }
+    "typescript": "^5.4.5"
+  },
+  "packageManager": "pnpm@9.2.0+sha512.98a80fd11c2e7096747762304106432b3ddc67dcf54b5a8c01c93f68a2cd5e05e6821849522a06fb76284d41a2660d5e334f2ee3bbf29183bf2e739b1dafa771"
 }

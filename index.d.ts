@@ -4,14 +4,17 @@ type BaseAction = string
 
 type BaseStates<State extends BaseState = BaseState> = Record<State, BaseActions>
 
+// biome-ignore lint/suspicious/noExplicitAny: Do not limit client args
 type Args = any[]
 
-type LifecycleAction = (arg: {
+interface LifecycleActionArgs {
   from: BaseState | null
   to: BaseState
   event: BaseAction | null
   args: Args
-}) => void
+}
+
+type LifecycleAction = (arg: LifecycleActionArgs) => void
 
 type AllArgsAction = (...args: Args) => BaseState
 
@@ -22,8 +25,7 @@ type ActionFunction = BaseState | AllArgsAction | VoidFunction
 type BaseActions = {
   _enter?: LifecycleAction
   _exit?: LifecycleAction
-  [key: BaseAction]: ActionFunction
-}
+} & { [key: BaseAction]: ActionFunction }
 
 type DetectFallBackState<State extends BaseState> = State extends '*' ? string : State
 
@@ -57,15 +59,16 @@ type StateMachine<State extends BaseState, Actions> = {
   subscribe: Subscribe<State>
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: Do not limit client unions
 type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
-  k: infer I
+  k: infer I,
 ) => void
   ? I
   : never
 
 declare const svelteFsm: <Sts extends Readonly<BaseStates>, S extends ExtractStates<Sts>>(
   state: S,
-  states: Sts
+  states: Sts,
 ) => StateMachine<ExtractStates<Sts>, UnionToIntersection<ExtractActions<Sts>>>
 
 export default svelteFsm

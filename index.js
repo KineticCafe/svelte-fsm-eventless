@@ -7,7 +7,6 @@ export default function (initialState, states = {}) {
    * - calls _exit() and _enter() methods if they are defined on exited/entered state
    */
   const subscribers = new Set()
-  let proxy
   let state = null
 
   function subscribe(callback) {
@@ -18,6 +17,25 @@ export default function (initialState, states = {}) {
     callback(state)
     return () => subscribers.delete(callback)
   }
+
+  /*
+   * Proxy-based event invocation API:
+   * - return a proxy object with single native subscribe method
+   * - all other properties act as dynamic event invocation methods
+   * - event invokers also respond to .debounce(wait, ...args) (see above)
+   */
+  const proxy = new Proxy(
+    { subscribe },
+    {
+      get(target, property) {
+        if (!Reflect.has(target, property)) {
+          target[property] = invoke.bind(null, property)
+          target[property].debounce = debounce.bind(null, property)
+        }
+        return Reflect.get(target, property)
+      },
+    },
+  )
 
   /*
    * API change: subscribers are notified after _enter, not before, because eventless transitions
@@ -33,7 +51,7 @@ export default function (initialState, states = {}) {
    */
   function transition(newState, event, args) {
     let metadata = { from: state, to: newState, event, args }
-    let startState = state
+    const startState = state
 
     // Never exit the null state
     if (state !== null) {
@@ -54,7 +72,9 @@ export default function (initialState, states = {}) {
     // If (and only if) the final state is not the same as the initial state, then we
     // inform the subscribers
     if (state !== startState) {
-      subscribers.forEach((callback) => callback(state))
+      for (const callback of subscribers) {
+        callback(state)
+      }
     }
   }
 
@@ -84,31 +104,13 @@ export default function (initialState, states = {}) {
     clearTimeout(timeout[event])
     if (wait === null) {
       return state
-    } else {
-      await new Promise((resolve) => (timeout[event] = setTimeout(resolve, wait)))
-      delete timeout[event]
-      return invoke(event, ...args)
     }
+    await new Promise((resolve) => {
+      timeout[event] = setTimeout(resolve, wait)
+    })
+    delete timeout[event]
+    return invoke(event, ...args)
   }
-
-  /*
-   * Proxy-based event invocation API:
-   * - return a proxy object with single native subscribe method
-   * - all other properties act as dynamic event invocation methods
-   * - event invokers also respond to .debounce(wait, ...args) (see above)
-   */
-  proxy = new Proxy(
-    { subscribe },
-    {
-      get(target, property) {
-        if (!Reflect.has(target, property)) {
-          target[property] = invoke.bind(null, property)
-          target[property].debounce = debounce.bind(null, property)
-        }
-        return Reflect.get(target, property)
-      },
-    }
-  )
 
   /*
    * `_enter` initial state and return the proxy object. Note that this may also

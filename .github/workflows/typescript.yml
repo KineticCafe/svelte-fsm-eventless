@@ -21,8 +21,7 @@ jobs:
         node:
           - 18
           - 20
-        pnpm:
-          - 8
+          - 22
 
     runs-on: ${{ matrix.os }}
 
@@ -30,8 +29,6 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v4
-        with:
-          version: ${{ matrix.pnpm }}
 
       - uses: actions/setup-node@v4.0.2
         with:
@@ -40,10 +37,4 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm test
-      - run: pnpm lint
-      - run: |
-          pnpm format:check || {
-            pnpm format
-            git diff
-            exit 1
-          }
+      - run: pnpm check:fix 
