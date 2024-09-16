@@ -37,7 +37,7 @@
   "homepage": "https://github.com/kineticcafe/svelte-fsm-eventless#README",
   "devDependencies": {
     "-": "0.0.1",
-    "@biomejs/biome": "1.8.3",
+    "@biomejs/biome": "1.9.1",
     "@types/chai": "^4.3.11",
     "@types/sinon": "^17.0.2",
     "chai": "^5.1.1",
@@ -45,5 +45,5 @@
     "sinon": "^18.0.0",
     "typescript": "^5.4.5"
   },
-  "packageManager": "pnpm@9.2.0+sha512.98a80fd11c2e7096747762304106432b3ddc67dcf54b5a8c01c93f68a2cd5e05e6821849522a06fb76284d41a2660d5e334f2ee3bbf29183bf2e739b1dafa771"
+  "packageManager": "pnpm@9.10.0+sha512.73a29afa36a0d092ece5271de5177ecbf8318d454ecd701343131b8ebc0c1a91c487da46ab77c8e596d6acf1461e3594ced4becedf8921b074fbd8653ed7051c"
 }
